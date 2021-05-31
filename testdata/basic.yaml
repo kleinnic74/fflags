@@ -1,0 +1,10 @@
+features:
+  utest:
+      files: false
+      network: true
+  debug: true
+  strings:
+    - utf8
+    - ascii
+    - ascii:
+        upper: true

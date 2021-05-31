@@ -5,6 +5,7 @@ import (
 	"sync"
 )
 
+// Feature is the flag representing a given feature tree
 type Feature string
 
 type features struct {
@@ -20,6 +21,7 @@ func init() {
 	}
 }
 
+// Define defines the feature with the given name and marks it disabled
 func Define(name string) Feature {
 	f.l.Lock()
 	defer f.l.Unlock()
@@ -31,8 +33,13 @@ func Define(name string) Feature {
 	return canonical
 }
 
+// Enable will mark the given feature and all its sub-features as enabled
 func (feature Feature) Enable() {
 	f.Enable(feature)
+}
+
+func (feature Feature) Disable() {
+	f.Disable(feature)
 }
 
 func IsEnabled(feature Feature) bool {
@@ -51,6 +58,14 @@ func (s *features) Enable(feature Feature) {
 	defer s.l.Unlock()
 
 	s.status[feature] = true
+}
+
+func (s *features) Disable(feature Feature) {
+	s.l.Lock()
+	defer s.l.Unlock()
+
+	s.status[feature] = false
+	// TODO: take care of sub-features features
 }
 
 func (s *features) isActive(feature Feature) bool {
