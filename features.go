@@ -69,6 +69,7 @@ func (s *features) Disable(feature Feature) {
 }
 
 func (s *features) isActive(feature Feature) bool {
+	// TODO: Make this more efficient
 	parts := strings.Split(string(feature), ".")
 	path := make([]Feature, len(parts))
 	for i := len(parts); i > 0; i-- {
